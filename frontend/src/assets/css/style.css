@@ -1,0 +1,72 @@
+/* You can add global styles to this file, and also import other style files */
+/* Page background */
+.app-container {
+    background: #f5f7ff;
+    min-height: 100vh;
+  }
+  
+  /* Header gradient */
+  .header-card {
+    background: linear-gradient(135deg, #7d78db, #b7b7d4);
+    color: white !important;
+    text-align: center;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  /* Upload card accent */
+  .upload-card {
+    border-left: 5px solid #b7b7d4;
+  }
+  
+  /* File input styling */
+  .file-input {
+    border-radius: 10px;
+    padding: 10px;
+  }
+  
+  /* Table styling */
+  .table-custom {
+    background: white;
+  }
+  
+  .table-custom thead {
+    background: #eef2ff;
+    color: #3730a3;
+  }
+  
+  .table-custom tbody tr:hover {
+    background: #f1f5ff;
+    transition: 0.2s;
+  }
+  
+  /* Results card accent */
+  .results-card {
+    border-top: 4px solid #b7b7d4;
+  }
+  
+  /* Empty state */
+  .empty-state {
+    padding: 40px;
+  }
+
+  .custom-upload-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #7d78db, #b7b7d4);
+    color: white;
+    padding: 10px 22px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  }
+  
+  .custom-upload-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.4);
+  }
+  
+  .custom-upload-btn:active {
+    transform: scale(0.98);
+  }

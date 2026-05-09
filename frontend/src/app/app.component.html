@@ -1,0 +1,76 @@
+<div class="app-container py-5">
+
+	<!-- Header -->
+	<div class="header-card p-4 mb-4 rounded-4 text-white shadow-sm text-white">
+	  <h2 class="mb-1">Employee Pair Analysis</h2>
+	  <p class="mb-0 opacity-75">Upload a file to analyze shared project work time</p>
+	</div>
+  
+	<!-- Upload -->
+	<div class="card upload-card shadow-sm mb-4 border-0 rounded-4">
+	  <div class="card-body p-4">
+  
+		<input
+			type="file"
+			id="fileUpload"
+			class="d-none"
+			style="display: none;"
+			(change)="onFileChange($event)"
+		/>
+
+		<label for="fileUpload" class="custom-upload-btn">
+		Choose File
+		</label>
+  
+		<small class="text-muted mt-2 d-block">
+		  Supported formats: CSV / TXT
+		</small>
+  
+	  </div>
+	</div>
+  
+	<!-- Results -->
+	<div class="card results-card shadow-sm border-0 rounded-4" *ngIf="results.length > 0">
+  
+	  <div class="card-header bg-white border-0">
+		<h5 class="mb-0 text-primary">Results</h5>
+	  </div>
+  
+	  <div class="table-responsive">
+  
+		<table class="table table-custom align-middle mb-0">
+  
+		  <thead>
+			<tr>
+			  <th>Employee #1</th>
+			  <th>Employee #2</th>
+			  <th>Project ID</th>
+			  <th class="text-end">Days Worked</th>
+			</tr>
+		  </thead>
+  
+		  <tbody>
+			<tr *ngFor="let r of results">
+			  <td class="fw-semibold">{{ r.emp1 }}</td>
+			  <td class="fw-semibold">{{ r.emp2 }}</td>
+			  <td>{{ r.projectId }}</td>
+			  <td class="text-end">
+				<span class="badge rounded-pill bg-success px-3 py-2">
+				  {{ r.daysWorked }}
+				</span>
+			  </td>
+			</tr>
+		  </tbody>
+  
+		</table>
+  
+	  </div>
+	</div>
+  
+	<!-- Empty state -->
+	<div class="empty-state mt-5 text-center text-muted" *ngIf="results.length === 0">
+	  <div class="fs-5">No results yet</div>
+	  <div class="small">Upload a file to start analysis</div>
+	</div>
+  
+  </div>
