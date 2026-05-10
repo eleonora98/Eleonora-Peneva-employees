@@ -2,25 +2,25 @@ package com.example.backend.dto;
 
 public class PairResult {
 
-    private Long employee1;
-    private Long employee2;
+    private Long employeeId1;
+    private Long employeeId2;
     private Long projectId;
     private long daysWorked;
 
-    public PairResult(Long employee1, Long employee2,
+    public PairResult(Long employeeId1, Long employeeId2,
                       Long projectId, long daysWorked) {
-        this.employee1 = employee1;
-        this.employee2 = employee2;
+        this.employeeId1 = employeeId1;
+        this.employeeId2 = employeeId2;
         this.projectId = projectId;
         this.daysWorked = daysWorked;
     }
 
-    public Long getEmployee1() {
-        return employee1;
+    public Long getEmployeeId1() {
+        return employeeId1;
     }
 
-    public Long getEmployee2() {
-        return employee2;
+    public Long getEmployeeId2() {
+        return employeeId2;
     }
 
     public Long getProjectId() {

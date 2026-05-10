@@ -4,7 +4,6 @@ package com.example.backend.service;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,12 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.backend.model.EmployeeProject;
+import com.example.backend.util.DateFormatterUtil;
 
 @Service
 public class CsvService {
-
-    private static final DateTimeFormatter FORMATTER =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public List<EmployeeProject> parse(MultipartFile file) throws Exception {
 
@@ -40,20 +37,17 @@ public class CsvService {
 
             Long empId = Long.parseLong(record.get("EmpID").trim());
             Long projectId = Long.parseLong(record.get("ProjectID").trim());
+                        
+            String fromDateAsText = record.get("DateFrom").trim();
+            String toDateAsText = record.get("DateTo").trim();
             
-            System.out.println(empId);
-
-            LocalDate from =
-                    LocalDate.parse(record.get("DateFrom").trim(), FORMATTER);
-
-            String dateToText = record.get("DateTo").trim();
-
+            LocalDate from = DateFormatterUtil.parseDate(fromDateAsText);
             LocalDate to;
 
-            if ("NULL".equalsIgnoreCase(dateToText)) {
+            if ("NULL".equalsIgnoreCase(toDateAsText)) {
                 to = LocalDate.now();
             } else {
-                to = LocalDate.parse(dateToText, FORMATTER);
+                to = DateFormatterUtil.parseDate(toDateAsText);
             }
 
             result.add(new EmployeeProject(
@@ -66,4 +60,5 @@ public class CsvService {
 
         return result;
     }
+
 }

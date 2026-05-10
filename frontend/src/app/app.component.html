@@ -13,6 +13,7 @@
 		<input
 			type="file"
 			id="fileUpload"
+			accept=".CSV"
 			class="d-none"
 			style="display: none;"
 			(change)="onFileChange($event)"
@@ -23,7 +24,7 @@
 		</label>
   
 		<small class="text-muted mt-2 d-block">
-		  Supported formats: CSV / TXT
+		  Supported formats: CSV
 		</small>
   
 	  </div>
@@ -50,13 +51,13 @@
 		  </thead>
   
 		  <tbody>
-			<tr *ngFor="let r of results">
-			  <td class="fw-semibold">{{ r.emp1 }}</td>
-			  <td class="fw-semibold">{{ r.emp2 }}</td>
-			  <td>{{ r.projectId }}</td>
+			<tr *ngFor="let result of results">
+			  <td class="fw-semibold">{{ result.employeeId1 }}</td>
+			  <td class="fw-semibold">{{ result.employeeId2 }}</td>
+			  <td>{{ result.projectId }}</td>
 			  <td class="text-end">
 				<span class="badge rounded-pill bg-success px-3 py-2">
-				  {{ r.daysWorked }}
+				  {{ result.daysWorked }}
 				</span>
 			  </td>
 			</tr>

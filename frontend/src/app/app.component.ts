@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { EmployeeService } from './services/employee-service';
+import { PairResult } from './model/pair-result';
 
 @Component({
 	selector: 'app-root',
@@ -7,7 +8,7 @@ import { EmployeeService } from './services/employee-service';
 })
 export class AppComponent {
 
-	results: any[] = [];
+	results: PairResult[] = [];
 
 	constructor(private service: EmployeeService) { }
 
@@ -16,6 +17,11 @@ export class AppComponent {
 		const file = event.target.files[0];
 
 		if (!file) {
+			return;
+		}
+
+		if (!file.name.endsWith('.csv')) {
+			alert('Please upload CSV file');
 			return;
 		}
 

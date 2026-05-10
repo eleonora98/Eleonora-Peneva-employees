@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -16,80 +17,85 @@ import com.example.backend.model.EmployeeProject;
 @Service
 public class EmployeePairService {
 
-    public List<PairResult> findLongestWorkingPair(
-            List<EmployeeProject> records) {
+	public List<PairResult> findLongestWorkingPair(
+	        List<EmployeeProject> records) {
 
-        Map<String, Long> pairTotalDays = new HashMap<>();
-        List<PairResult> details = new ArrayList<>();
+	    Map<Long, List<EmployeeProject>> projects =
+	            records.stream()
+	            .collect(Collectors.groupingBy(
+	                    EmployeeProject::getProjectId
+	            ));
 
-        for (int i = 0; i < records.size(); i++) {
+	    Map<String, Long> pairTotalDays = new HashMap<>();
 
-            for (int j = i + 1; j < records.size(); j++) {
+	    List<PairResult> details = new ArrayList<>();
 
-                EmployeeProject e1 = records.get(i);
-                EmployeeProject e2 = records.get(j);
+	    for (List<EmployeeProject> employees : projects.values()) {
 
-                if (!e1.getProjectId().equals(e2.getProjectId())) {
-                    continue;
-                }
+	        for (int i = 0; i < employees.size(); i++) {
 
-                long overlap = calculateOverlap(e1, e2);
+	            for (int j = i + 1; j < employees.size(); j++) {
 
-                if (overlap > 0) {
+	                EmployeeProject empProject1 = employees.get(i);
+	                EmployeeProject empProject2 = employees.get(j);
 
-                    Long empA = Math.min(e1.getEmployeeId(), e2.getEmployeeId());
-                    Long empB = Math.max(e1.getEmployeeId(), e2.getEmployeeId());
+	                long overlap = calculateOverlap(empProject1, empProject2);
 
-                    String key = empA + "-" + empB;
+	                if (overlap > 0) {
 
-                    pairTotalDays.put(
-                            key,
-                            pairTotalDays.getOrDefault(key, 0L) + overlap
-                    );
+	                    Long empA =
+	                            Math.min(empProject1.getEmployeeId(), empProject2.getEmployeeId());
 
-                    details.add(new PairResult(
-                            empA,
-                            empB,
-                            e1.getProjectId(),
-                            overlap
-                    ));
-                }
-            }
-        }
+	                    Long empB =
+	                            Math.max(empProject1.getEmployeeId(), empProject2.getEmployeeId());
 
-        String bestPair = null;
-        long maxDays = 0;
+	                    String key = empA + "-" + empB;
 
-        for (Map.Entry<String, Long> entry : pairTotalDays.entrySet()) {
+	                    pairTotalDays.put(
+	                            key,
+	                            pairTotalDays.getOrDefault(key, 0L)
+	                                    + overlap
+	                    );
 
-            if (entry.getValue() > maxDays) {
-                maxDays = entry.getValue();
-                bestPair = entry.getKey();
-            }
-        }
+	                    details.add(new PairResult(
+	                            empA,
+	                            empB,
+	                            empProject1.getProjectId(),
+	                            overlap
+	                    ));
+	                }
+	            }
+	        }
+	    }
 
-        if (bestPair == null) {
-            return Collections.emptyList();
-        }
+	    String bestPair = null;
+	    long maxDays = 0;
 
-        String[] ids = bestPair.split("-");
+	    for (Map.Entry<String, Long> entry
+	            : pairTotalDays.entrySet()) {
 
-        Long emp1 = Long.parseLong(ids[0]);
-        Long emp2 = Long.parseLong(ids[1]);
+	        if (entry.getValue() > maxDays) {
 
-        List<PairResult> result = new ArrayList<>();
+	            maxDays = entry.getValue();
+	            bestPair = entry.getKey();
+	        }
+	    }
 
-        for (PairResult r : details) {
+	    if (bestPair == null) {
+	        return Collections.emptyList();
+	    }
 
-            if (r.getEmployee1().equals(emp1)
-                    && r.getEmployee2().equals(emp2)) {
+	    String[] ids = bestPair.split("-");
 
-                result.add(r);
-            }
-        }
+	    Long emp1 = Long.parseLong(ids[0]);
+	    Long emp2 = Long.parseLong(ids[1]);
 
-        return result;
-    }
+	    return details.stream()
+	            .filter(r ->
+	                    r.getEmployeeId1().equals(emp1)
+	                            && r.getEmployeeId2().equals(emp2))
+	            .collect(Collectors.toList());
+	}
 
     private long calculateOverlap(
             EmployeeProject e1,
