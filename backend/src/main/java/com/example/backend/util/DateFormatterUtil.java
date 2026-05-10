@@ -11,7 +11,8 @@ public class DateFormatterUtil {
 	private static final List<String> DATE_PATTERNS = Arrays.asList(
 			"yyyy-MM-dd", "yyyy/MM/dd", "yyyy.MM.dd",
 			"MM-dd-yyyy", "MM/dd/yyyy", "MM.dd.yyyy",
-			"dd-MM-yyyy", "dd/MM/yyyy", "dd.MM.yyyy");
+			"dd-MM-yyyy", "dd/MM/yyyy", "dd.MM.yyyy", 
+			"dd MMM yyyy");
 
 	public static LocalDate parseDate(String text) {
 		for (String pattern : DATE_PATTERNS) {
