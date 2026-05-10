@@ -11,7 +11,6 @@ export class EmployeeService {
     constructor(private http: HttpClient) { }
 
     upload(file: File): Observable<PairResult[]> {
-
         const formData = new FormData();
 
         formData.append('file', file);

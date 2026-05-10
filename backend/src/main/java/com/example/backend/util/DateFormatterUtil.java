@@ -2,36 +2,30 @@ package com.example.backend.util;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
 
 public class DateFormatterUtil {
-	
-    public static LocalDate parseDate(String text) {
 
-        List<DateTimeFormatter> formatters = Arrays.asList(
-                DateTimeFormatter.ofPattern("yyyy-MM-dd"),
-                DateTimeFormatter.ofPattern("yyyy/MM/dd"),
-                DateTimeFormatter.ofPattern("yyyy.MM.dd"),
-                
-                DateTimeFormatter.ofPattern("MM-dd-yyyy"),
-                DateTimeFormatter.ofPattern("MM/dd/yyyy"),
-                DateTimeFormatter.ofPattern("MM.dd.yyyy"),
+	private static final List<String> DATE_PATTERNS = Arrays.asList(
+			"yyyy-MM-dd", "yyyy/MM/dd", "yyyy.MM.dd",
+			"MM-dd-yyyy", "MM/dd/yyyy", "MM.dd.yyyy",
+			"dd-MM-yyyy", "dd/MM/yyyy", "dd.MM.yyyy");
 
-                DateTimeFormatter.ofPattern("dd-MM-yyyy"),
-                DateTimeFormatter.ofPattern("dd/MM/yyyy"),
-                DateTimeFormatter.ofPattern("dd.MM.yyyy")
-        );
+	public static LocalDate parseDate(String text) {
+		for (String pattern : DATE_PATTERNS) {
 
-        for (DateTimeFormatter formatter : formatters) {
+			try {
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
 
-            try {
-                return LocalDate.parse(text, formatter);
-            } catch (Exception ignored) {
-            }
-        }
+				return LocalDate.parse(text, formatter);
 
-        throw new RuntimeException("Invalid date: " + text);
-    }
+			} catch (DateTimeParseException ignored) {
+			}
+		}
+
+		throw new RuntimeException("Unsupported date format: " + text);
+	}
 
 }

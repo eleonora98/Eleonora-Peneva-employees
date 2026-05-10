@@ -9,27 +9,26 @@ import { PairResult } from './model/pair-result';
 export class AppComponent {
 
 	results: PairResult[] = [];
-
 	constructor(private service: EmployeeService) { }
 
 	onFileChange(event: any) {
-
 		const file = event.target.files[0];
 
 		if (!file) {
 			return;
 		}
 
-		if (!file.name.endsWith('.csv')) {
-			alert('Please upload CSV file');
-			return;
-		}
-
 		this.service.upload(file)
-			.subscribe(data => {
-				this.results = data;
-				event.target.value = '';
-
+			.subscribe({
+				next: (data) => {
+					this.results = data;
+					event.target.value = '';
+				},
+				error: (err) => {
+					alert(err.error);
+					event.target.value = '';
+				}
+				
 			});
 	}
 }
